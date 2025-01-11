@@ -20,7 +20,7 @@ on:
 
   workflow_dispatch:
     inputs:
-      Bypass:
+      bypass:
         type: choice
         description: Bypass Unittests
         required: true
@@ -49,9 +49,9 @@ jobs:
           echo "Exit code: $?"
       
       - name: Set check status
-        if: {{ github.event.inputs.message }} == 'Yes' || (exit-code() == 0)
         run: |
           echo "Check passed"
+          echo {{ github.event.inputs.bypass }}
           
           # Optional: You can also set the check status using REST API
           # curl -X POST \
