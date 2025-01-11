@@ -20,19 +20,14 @@ on:
 
   workflow_dispatch:
     inputs:
-      name:
+      Bypass:
         type: choice
-        description: Who to greet
-        options: 
-        - monalisa
-        - cschleiden
-      message:
+        description: Bypass Unittests
         required: true
-      use-emoji:
-        type: boolean
-        description: Include 🎉🤣 emojis
-      environment:
-        type: environment
+        default: 'No'
+        options: 
+        - No
+        - Yes
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -54,7 +49,7 @@ jobs:
           echo "Exit code: $?"
       
       - name: Set check status
-        if: env.run-tests == 'true' || (exit-code() == 0)
+        if: {{ github.event.inputs.message }} == 'Yes' || (exit-code() == 0)
         run: |
           echo "Check passed"
           
@@ -66,5 +61,3 @@ jobs:
           #   https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/statuses/${{ github.sha }}
 
           
-      - name: Run a one-line script
-        run: echo Hello, world!
