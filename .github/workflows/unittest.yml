@@ -11,13 +11,6 @@ on:
     branches: [ "*" ]
 
   # Allows you to run this workflow manually from the Actions tab
-#  workflow_dispatch:
-#    inputs:
-#    run-tests:
-#      description: 'Run tests'
-#      required: false
-#      default: 'false'
-
   workflow_dispatch:
     inputs:
       bypass:
@@ -50,14 +43,23 @@ jobs:
       
       - name: Set check status
         run: |
-          echo "Check passed"
-          echo {{ github.event.inputs.bypass }}
-          
-          # Optional: You can also set the check status using REST API
-          # curl -X POST \
-          #   -H "Authorization: token YOUR_GITHUB_TOKEN" \
-          #   -H "Accept: application/vnd.github.v3+json" \
-          #   -d '{"state": "completed", "status": "success"}' \
-          #   https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/statuses/${{ github.sha }}
+          if [ "${{ github.event.inputs.bypass }}" == "No" ]; then
+            echo "Check passed"
+            echo "::set-output name=status::success"
+          else
+            echo "Check bypassed"
+            echo "::set-output name=status::skipped"
+          fi
 
-          
+      - name: Create status check
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const status = core.getInput('status');
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: status === 'success' ? 'success' : 'failure',
+              context: 'unittest'
+            });
