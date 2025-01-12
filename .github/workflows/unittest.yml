@@ -55,8 +55,8 @@ jobs:
       - name: Set commit status
         id: commit_status
         run: |
-          STATUS_DESCRIPTION=The Build Succeded!
-          STATUS_TARGET_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          set STATUS_DESCRIPTION=The Build Succeded!
+          set STATUS_TARGET_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
 
           gh api \
