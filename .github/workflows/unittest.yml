@@ -34,8 +34,8 @@ jobs:
         id: unittests
         run: |
           ls -la # some arbitrary command that will not fail, to mimic running tests successfully
-          echo "Exit code: $?"
-      
+          echo "unittests=success" >> $GITHUB_OUTPUT
+ 
       - name: Set check status
         id: set_status
         run: |
@@ -66,11 +66,10 @@ jobs:
             -f "description=Unittest status:${{ steps.set_status.outputs.status }}" \
             -f "context=Unittest"
 
-            echo "### Step: ${{ github.job.steps.this.name}}" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
-            echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
-            echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
-            echo "- How about a third one?" >> $GITHUB_STEP_SUMMARY
+            echo "GitHub Outputs" >>  $GITHUB_STEP_SUMMARY
+            cat $GITHUB_OUTPUT >>  $GITHUB_STEP_SUMMARY
+ 
+
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
