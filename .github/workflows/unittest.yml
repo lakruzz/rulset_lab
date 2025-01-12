@@ -52,8 +52,14 @@ jobs:
             fi
           fi
 
-      - name: Create status check
+      - name: Set commit status
+        id: commit_status
         run: |
+          echo "description=$(printf '%q' "The build succeeded!")" >> $GITHUB_OUTPUT
+          echo "context=unittest" >> $GITHUB_OUTPUT
+
+          cat $GITHUB_OUTPUT >> $GITHUB_STEP_SUMMARY
+
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
@@ -61,8 +67,8 @@ jobs:
             /repos/${{ github.repository }}/statuses/${{ github.sha }} \
             -f "state=${{ steps.set_status.outputs.status }}" \
             -f target_url='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' \      
-            -f "description=The build succeeded" \
-            -f context=unittest
+            -f "description=${{ steps.commit_status.outputs.description}}" \
+            -f context=${{ steps.commit_status.outputs.context }}
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
