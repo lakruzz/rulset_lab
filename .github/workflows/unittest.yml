@@ -21,7 +21,7 @@ on:
          
 
 jobs:
-  build:
+  pre_deliver:
     runs-on: ubuntu-latest
 
     permissions:
@@ -33,10 +33,14 @@ jobs:
       - name: Run unittests
         id: unittests
         run: |
-          ls -la # some arbitrary command that will not fail, to mimic running tests successfully
-          echo "unittests=success" >> $GITHUB_OUTPUT
- 
-      - name: Set check status
+          if [ "${{ github.event.inputs.bypass }}" == "Yes" ]; then
+            echo ">[!WARNING]" >> $GITHUB_STEPS_SUMMARY
+            echo ">Bypassing unittests >> $GITHUB_STEPS_SUMMARY
+            echo ">Forcing unittests status = `success`" >> $GITHUB_STEPS_SUMMARY            
+          else
+            ls -la # some arbitrary command that will not fail, to mimic running tests successfully
+
+      - name: Set status
         id: set_status
         run: |
           if [ "${{ github.event.inputs.bypass }}" == "Yes" ]; then
@@ -65,11 +69,6 @@ jobs:
             -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             -f "description=Unittest status:${{ steps.set_status.outputs.status }}" \
             -f "context=Unittest"
-
-            echo "GitHub Outputs" >>  $GITHUB_STEP_SUMMARY
-            cat $GITHUB_OUTPUT >>  $GITHUB_STEP_SUMMARY
- 
-
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
