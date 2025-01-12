@@ -33,9 +33,9 @@ jobs:
       - name: Run unittests
         id: unittests
         run: |
-          echo "\>[!WARNING]" >> $GITHUB_STEPS_SUMMARY
-          echo "\>Bypassing unittests >> $GITHUB_STEPS_SUMMARY
-          echo "\>Forcing unittests status = \`success\`" >> $GITHUB_STEPS_SUMMARY            
+          echo '>[!WARNING]' >> $GITHUB_STEPS_SUMMARY
+          echo '>Bypassing unittests' >> $GITHUB_STEPS_SUMMARY
+          echo '>Forcing unittests status = `success`' >> $GITHUB_STEPS_SUMMARY            
           ls -la
 
       - name: Set status
