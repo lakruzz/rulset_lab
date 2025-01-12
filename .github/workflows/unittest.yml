@@ -39,6 +39,7 @@ jobs:
             echo ">Forcing unittests status = `success`" >> $GITHUB_STEPS_SUMMARY            
           else
             ls -la # some arbitrary command that will not fail, to mimic running tests successfully
+          fi
 
       - name: Set status
         id: set_status
