@@ -55,6 +55,9 @@ jobs:
       - name: Set commit status
         id: commit_status
         run: |
+          STATUS_DESCRIPTION=The Build Succeded!
+          STATUS_TARGET_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
 
           gh api \
             --method POST \
@@ -62,9 +65,10 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/statuses/${{ github.sha }} \
             -f "state=${{ steps.set_status.outputs.status }}" \
-            -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \      
-            -f "description=The Build Succeded\!" \
+            -f "description=$(printf '%q' $STATUS_DESCRIPTION)" \
             -f "context=Unittest"
+
+#           -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \      
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
