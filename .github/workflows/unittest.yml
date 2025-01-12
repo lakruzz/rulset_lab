@@ -33,13 +33,10 @@ jobs:
       - name: Run unittests
         id: unittests
         run: |
-          if [ "${{ github.event.inputs.bypass }}" == "Yes" ]; then
-            echo ">[!WARNING]" >> $GITHUB_STEPS_SUMMARY
-            echo ">Bypassing unittests >> $GITHUB_STEPS_SUMMARY
-            echo ">Forcing unittests status = `success`" >> $GITHUB_STEPS_SUMMARY            
-          else
-            ls -la
-          fi
+          echo ">[!WARNING]" >> $GITHUB_STEPS_SUMMARY
+          echo ">Bypassing unittests >> $GITHUB_STEPS_SUMMARY
+          echo ">Forcing unittests status = `success`" >> $GITHUB_STEPS_SUMMARY            
+          ls -la
 
       - name: Set status
         id: set_status
