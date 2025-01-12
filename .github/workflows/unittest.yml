@@ -38,7 +38,7 @@ jobs:
             echo ">Bypassing unittests >> $GITHUB_STEPS_SUMMARY
             echo ">Forcing unittests status = `success`" >> $GITHUB_STEPS_SUMMARY            
           else
-            ls -la # some arbitrary command that will not fail, to mimic running tests successfully
+            ls -la
           fi
 
       - name: Set status
