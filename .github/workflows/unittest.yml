@@ -16,8 +16,8 @@ on:
         required: true
         default: 'No'
         options: 
-        - No
-        - Yes
+        - 'No'
+        - 'Yes'
          
 
 jobs:
