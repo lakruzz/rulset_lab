@@ -66,7 +66,7 @@ jobs:
             -f "description=Unittest status:${{ steps.set_status.outputs.status }}" \
             -f "context=Unittest"
 
-            echo "### ${{ github.job.steps.this.name}}" >> $GITHUB_STEP_SUMMARY
+            echo "### Step: ${{ github.job.steps.this.name}}" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
             echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
             echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
