@@ -41,14 +41,14 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.bypass }}" == "Yes" ]; then
             echo "Bypass is set to Yes"
-            echo "::set-output name=status::success"
+            echo "status=success" >> $GITHUB_OUTPUT
           else
             if [ "${{ steps.unittests.outcome }}" == "success" ]; then
               echo "Tests passed"
-              echo "::set-output name=status::success"
+            echo "status=success" >> $GITHUB_OUTPUT
             else
               echo "Tests failed"
-              echo "::set-output name=status::failure"
+            echo "status=failed" >> $GITHUB_OUTPUT
             fi
           fi
 
@@ -59,10 +59,10 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/statuses/${{ github.sha }} \
-            -f 'state=${{ steps.set_status.outputs.status }}' \
-            -f 'target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}' \      
-            -f 'description=The build succeeded!' \
-            -f 'context=unittest'
+            -f "state=${{ steps.set_status.outputs.status }}" \
+            -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"" \      
+            -f description='The build succeeded' \
+            -f context=unittest
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
