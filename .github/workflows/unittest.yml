@@ -61,8 +61,8 @@ jobs:
             /repos/${{ github.repository }}/statuses/${{ github.sha }} \
             -f "state=${{ steps.set_status.outputs.status }}" \
             -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \      
-            -f 'description=The build succeeded!' \
-            -f context=unittest
+            -f "description=The build succeeded" \
+            -f "context=unittest"
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
