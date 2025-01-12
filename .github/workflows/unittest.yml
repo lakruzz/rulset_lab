@@ -55,8 +55,6 @@ jobs:
       - name: Set commit status
         id: commit_status
         run: |
-          STEP_DESCRIPTION=$(printf '%q' 'The build succeeded!')
-          STEP_CONTEXT=unittest
 
           gh api \
             --method POST \
@@ -65,8 +63,8 @@ jobs:
             /repos/${{ github.repository }}/statuses/${{ github.sha }} \
             -f "state=${{ steps.set_status.outputs.status }}" \
             -f "target_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \      
-            -f "description=$STEP_DESCRIPTION" \
-            -f "context=$STEP_CONTEXT"
+            -f "description=The Build Succeded\!" \
+            -f "context=Unittest"
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
